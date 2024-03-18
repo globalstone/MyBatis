@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--	
+	UserMapper.xml
+	 :: SQL 를 갖는 MetaData 
+	
+	- MyBatis Framework 은 XML MetaData 를 사용 SQL구문을 관리
+	  (SQL은 xml 을 통해 적절히 캡슐화 되어 애플리케이선 외부로 분리함)
+	- SQL문의 입력(?) / 출력(?)을 매핑한다.  <== 아래의 select element 참조
+ -->		
+ 					
+<mapper namespace="UserMapper01">
+
+	<!-- SELECT 매핑구문(select SQL 등록) :: select element
+		ㅇ id : identifier 로 "UserMapper01.getUserList"의 식별성
+		ㅇ resultType : query 결과 resultType 선언된 User instance Field Binding
+		ㅇ SqlSession.selectList("UserMapper01.getUserList")
+	 -->
+  	
+  	<select 	id="getUserList" 	resultType="mybatis.service.domain.User">
+		SELECT
+		user_id 			AS userId,
+		user_name 	AS userName,
+		password 		AS password,
+		age 					AS age,
+		grade				AS grade,
+		reg_date 		AS regDate
+		FROM users   											
+  	</select>
+  	
+  	<!--  SELECT 매핑구문(selectSQL등록) :: select element 
+  		ㅇ id : identifier 로 "UserMapper01.getUserList"의 식별성
+		ㅇ resultType : query 결과 resultType 선언된 User instance Field Binding
+		ㅇ parameterType : 파라미터로 전달되는 값을 갖는 Data Type
+		ㅇ #{} Notaion : 파라미터 전달을 전달하는 MyBatis 대입자
+		==> PrepareStatemnet 의 ? 의미
+		ㅇ SqlSession.SelectOne("UserMapper01.getUser","user01")
+	-->
+	
+	<select id = "getUser"
+			parameterType = "java.lang.String"
+			resultType = "mybatis.service.domain.User">
+		SELECT
+		user_id 			AS userId,
+		user_name 	AS userName,
+		password 		AS password,
+		age 					AS age,
+		grade				AS grade,
+		reg_date 		AS regDate
+		FROM users 
+		WHERE user_id = #{value}	
+	</select>
+	
+	<!--  SELECT 매핑구문(selectSQL등록) :: select element 
+  		ㅇ id : identifier 로 "UserMapper01.getUserList"의 식별성
+		ㅇ resultType : query 결과 resultType 선언된 User instance Field Binding
+		ㅇ parameterType : 파라미터로 전달되는 값을 갖는 Data Type
+		ㅇ #{} Notaion : 파라미터 전달을 전달하는 MyBatis 대입자
+		==> PrepareStatemnet 의 ? 의미
+		ㅇ SqlSession.SelectOne("UserMapper01.getUser","user01")
+	
+		FQCN(Full Qualified Class Name) Alias(별칭관리)
+		mybatis-config01.xml 에 서술적기술로 선언함.
+		<typeAliases>
+			<typeAlias alias = "user" type = "mybatis.service.domain.User" />
+		</typeAliases>
+	-->
+  	
+  	<select id = "findUserId" parameterType = "user" resultType = "String">
+  		SELECT
+  		user_name
+  		FROM users
+  		WHERE user_id = #{userId} AND password = #{password}
+  	</select>
+  	
+  	<!--  SELECT 매핑구문(selectSQL등록) :: select element -->
+  	
+  	<select id = "getUserListAge" parameterType = "int" resultType = "String">
+		SELECT
+		user_name
+		FROM users
+		WHERE age = #{age}
+  	</select>
+
+</mapper>

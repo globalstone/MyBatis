@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserMapper02">
+
+	<!-- SELECT 매핑구문(select SQL 등록) :: select element	 -->
+  	
+  	<select 	id="getUserList01" 	resultType="user" parameterType = "string">
+		SELECT
+		user_id 			AS userId,
+		user_name 	AS userName,
+		password 		AS password,
+		age 					AS age,
+		grade				AS grade,
+		reg_date 		AS regDate
+		FROM users
+		WHERE user_id like #{value}											
+  	</select>
+  	
+  	<!--  SELECT 매핑구문(selectSQL등록) :: select element 
+		ㅇ #{} Notaion : 파라미터 전달을 전달하는 MyBatis 대입자로 #{userId} 의미
+			==> PrepareStatement 의 ? 에 값을 대입
+		ㅇ ${} Notaion : SQL에 값을 직접 삽입하는 문법
+	-->
+	
+	<select id = "getUserList02"
+			parameterType = "string"
+			resultType = "user">
+		SELECT
+		user_id 			AS userId,
+		user_name 	AS userName,
+		password 		AS password,
+		age 					AS age,
+		grade				AS grade,
+		reg_date 		AS regDate
+		FROM users 
+		WHERE user_id like '%${value}%'	
+	</select>
+	
+  	
+  	<!--  SELECT 매핑구문(selectSQL등록) :: select element -->
+  	
+  	<select id = "findUser" parameterType = "string" resultType = "string">
+		SELECT
+		user_name
+		FROM users
+		WHERE ${value}
+  	</select>
+
+</mapper>
